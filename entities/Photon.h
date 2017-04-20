@@ -5,6 +5,8 @@
 #ifndef PHOTON_H
 #define PHOTON_H
 
+#include "../constants.h"
+
 #include <SFML/Graphics.hpp>
 #include "../constants.h"
 using sf::Drawable;
