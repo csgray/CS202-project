@@ -35,11 +35,8 @@ using std::floor;
 std::random_device World::ranDev;
 std::mt19937 World::rng = std::mt19937(ranDev());
 std::uniform_real_distribution<float> World::starDist(0.0,(float)WIDTH);
-std::uniform_real_distribution<float> World::enemyStartingVel(-10.,10.);
-std::uniform_real_distribution<float> World::optimalPlayerDist(HEIGHT / 2, HEIGHT - 100);
 std::uniform_int_distribution<int> World::randomInt(-1000, 1000);
 std::uniform_int_distribution<int> World::starBrightness(100, 255);
-
 
 ///////////////////////////STAR FUNCTIONS/////////////////////////////////
 // Creates a new star
@@ -170,10 +167,81 @@ void World::makeInitEnemies(){
 void World::updateEnemies(){
     //Look through all the enemies
     for(int e = enemies.size() - 1; e >= 0; --e){
-        enemies[e].update(*this);
-        if (enemies[e].hp <= 0) {
-            enemies.erase(enemies.begin()+e);
+        //Gets the position of the enemy
+        Vector2<float> pos = enemies[e].getPosition();
+
+        //Have enemies periodically shoot
+        if(randomInt(rng) % 200 == 0){
+            //Make a bullet shooting down
+            bullets.push_back(Bullet(ENEMY, pos.x, pos.y, Vector2<float>(0, ENEMY_BULLET_SPEED)));
         }
+
+        //Right side of the screen
+        if(pos.x > WIDTH - 2*ENEMY_WIDTH){
+            enemies[e].direction.x  *= -1;
+        }
+        //Left side of the screen
+        if(pos.x < ENEMY_WIDTH){
+            enemies[e].direction.x *= -1;
+        }
+        bool doesEnemyExist = true;
+        //Look through all the bullets
+        for (int b = bullets.size() - 1; b >= 0; --b) {
+            //If an enemy and a bullet intersect
+            if (enemies[e].checkIntersect(bullets[b]) && bullets[b].source == PLAYER) {
+                //Do damage to the enemy
+                enemies[e].hp -= bullets[b].damage;
+
+                Color currColor = enemies[e].getFillColor();
+
+                currColor.r += 50*bullets[b].damage;
+                currColor.g -= 20*bullets[b].damage;
+
+                enemies[e].setFillColor(currColor);
+                //Remove the bullet
+                bullets.erase(bullets.begin()+b);
+                //Check if enemy is dead
+                if (enemies[e].hp <= 0) {
+                    //Delete the enemy
+                    enemies.erase(enemies.begin()+e);
+                    doesEnemyExist = false;
+                    break;
+                }
+            }
+
+        }
+        // !!!NTF: THIS IS BAAAADDD...
+        for (int p = photons.size() - 1; p >= 0; --p) {
+            //If an enemy and a bullet intersect
+            if (enemies[e].getGlobalBounds().intersects(photons[p].hitBox.getGlobalBounds()) ) {
+                //Do damage to the enemy
+                enemies[e].hp -= photons[p].damage;
+
+                Color currColor = enemies[e].getFillColor();
+
+                enemies[e].setFillColor(currColor);
+                //Remove the bullet
+                photons.erase(photons.begin()+p);
+                //Check if enemy is dead
+                if (enemies[e].hp <= 0) {
+                    //Delete the enemy
+                    enemies.erase(enemies.begin()+e);
+                    doesEnemyExist = false;
+                    break;
+                }
+            }
+        }
+
+        //Don't move the wrong enemy
+        if(!doesEnemyExist) continue;
+        //Move the enemy
+        enemies[e].setPosition(pos + enemies[e].direction);
+
+//        Vector2<float> origin = enemies[e].getOrigin();
+//        enemies[e].setOrigin(HEIGHT / 2, WIDTH / 2);
+//        enemies[e].rotate(1);
+//        enemies[e].setOrigin(origin);
+
     }
 
 }

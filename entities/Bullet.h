@@ -9,19 +9,13 @@
 #include "../constants.h"
 
 #include <SFML/Graphics.hpp>
-using sf::Vector2f;
-using sf::Color;
+using sf::Vector2;
 
 struct Bullet : public BulletShape{
-
-    Bullet(int source,
-           float x,
-           float y,
-           Vector2f dir,
-           Color col = Color{255, 0, 0});
+    Bullet(int source, float x, float y, Vector2<float> dir);
 
     int source;
     int damage;
-    Vector2f direction;
+    Vector2<float> direction;
 };
 #endif // BULLET_H
