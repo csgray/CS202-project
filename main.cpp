@@ -4,40 +4,40 @@
 //Rough draft for game framework
 
 #include "constants.h"
+#include "Screens.h"
+#include "Screen_0.h"
 #include "World.h"
 #include "entities/Photon.h"
 
 #include <SFML/Graphics.hpp>
 using sf::Event;
 using sf::Color;
+#include <vector>
+using std::vector;
 
 int main(){
+    //vector of screens, holds all game screens
+    std::vector<Screens*> screens;
+    //manages which screen to run; -1 indicates close status
+    int screenSelect=0;
 
-    while(true){
-        World world;
-        //Runs for as long as the window is open
-        while(world.isOpen()){
-            //Gets all the events since the last iteration
-            Event event;
-            ///////Event loop/////////
-            while(world.pollEvent(event)){
-                //Act appropriately for different events
+    //create game window
+    sf::RenderWindow App(sf::VideoMode(WIDTH, HEIGHT), "SPACE GAME");
+    App.setFramerateLimit(FRAMERATE);
 
-                    if(event.type == sf::Event::Closed){
-                        world.close();
-                    }
+    //hide mouse cursor
+    App.setMouseCursorVisible(false);
 
-                    //if(event.type == sf::Event::KeyPressed){}
+    //Make screens
+    MenuScreen ms;
+    screens.push_back(&ms);
+    World gw;
+    screens.push_back(&gw);
 
-            }////END EVENT LOOP////
-            /* clear/draw/display cycle */
-            //Clear needs to be called before stuff can be drawn
-            world.clear(Color::Black);
-            world.update();
-            world.show();
-            world.display();
-        }//END WINDOW LOOP//
-        break;
+    //main game loop
+    while(screenSelect>=0){
+        screenSelect = screens[screenSelect]->Run(App);
     }
+    //return value set, should not happen
     return 0;
 }

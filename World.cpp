@@ -34,6 +34,7 @@ using std::floor;
 // Setup for random real number generator for stars
 std::random_device World::ranDev;
 std::mt19937 World::rng = std::mt19937(ranDev());
+std::uniform_real_distribution<float> World::starDist(0.0,(float)WIDTH);
 std::uniform_real_distribution<float> World::starDist(0.0,WIDTH);
 std::uniform_real_distribution<float> World::enemyStartingVel(-10.,10.);
 std::uniform_real_distribution<float> World::optimalPlayerDist(HEIGHT / 2, HEIGHT - 100);
@@ -179,16 +180,6 @@ void World::updateEnemies(){
 }
 ////////////////////////END ENEMY FUNCTIONS/////////////////////////
 
-
-// Constructor
-World::World() : RenderWindow(VideoMode((unsigned)WIDTH, (unsigned)HEIGHT), "ASTEROIDS"),
-                 playerShip(Ship())
-{
-    populateInitialStars();
-    makeInitEnemies();
-    this->setFramerateLimit(FRAMERATE);
-}
-
 // Updates all the entities in the game world
 void World::update()
 {
@@ -200,24 +191,41 @@ void World::update()
 }
 
 //Draws all the entities to the sfml window
-void World::show(){
+void World::show(sf::RenderWindow &gameScreen){
     // !!!NTF: Find a way to just loop through all the entities and draw them
     //         instead of having separate loops
     for(const auto & s : stars){
-        this->draw(s);
+        gameScreen.draw(s);
     }
     for(const auto & b : bullets){
-        this->draw(b);
+        gameScreen.draw(b);
     }
     for(const auto & p : photons){
-        this->draw(p);
+        gameScreen.draw(p);
         //this->draw(p.hitBox);
     }
     for(const auto & e : enemies){
-        this->draw(e);
+        gameScreen.draw(e);
     }
     if (!playerShip.playerIsDead) {
-        this->draw(playerShip);
+        gameScreen.draw(playerShip);
     }
+}
 
+int World::Run(sf::RenderWindow &gameScreen){
+    sf::Event event;
+
+    while(true){
+        while(gameScreen.pollEvent(event)){
+            if(event.type == sf::Event::Closed) return -1;
+            if(event.type == sf::Event::KeyPressed){
+                if(event.key.code == sf::Keyboard::Escape) return 0;
+            }
+        }
+
+        gameScreen.clear();
+        World::update();
+        World::show(gameScreen);
+        gameScreen.display();
+    }
 }

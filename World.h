@@ -14,12 +14,13 @@
 #include "entities/Bullet.h"
 #include "entities/Photon.h"
 #include "entities/Ship.h"
+#include "Screens.h"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <random>
 
-class World : public sf::RenderWindow{
+class World : public Screens{
     public:
 
         /* Player Ship Object */
@@ -52,10 +53,7 @@ class World : public sf::RenderWindow{
         void makeInitEnemies();
         void updateEnemies();
 
-    public:
-        World();
-
-        void show();
+        void show(sf::RenderWindow &);
         void update();
         Ship getPlayerShip();
 
@@ -70,6 +68,7 @@ class World : public sf::RenderWindow{
         static std::uniform_int_distribution<int> starBrightness;
         static std::uniform_int_distribution<int> randomInt;
 
+        virtual int Run(sf::RenderWindow &) override;
 };
 
 #endif // WORLD_H
