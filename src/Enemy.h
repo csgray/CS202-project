@@ -34,9 +34,15 @@ struct Enemy : public EnemyShape{
     float desiredPlayerDist;
 
     //Used to periodically dodge bullets
+<<<<<<< HEAD:src/Enemy.h
     Vector2f dodge(const vector<Bullet*> & bullets);
     int dodgeRecharge;
     int dodgeReloadTime;
+=======
+    Vector2f dodge(const vector<Bullet> & bullets, bool & hasForce);
+    int dodgeChargeTime;
+    int dodgeCounter;
+>>>>>>> enemyAI:src/Enemy.h
 
     //Push away from other enemies
     Vector2f separate(const vector<Enemy*> & enemies);

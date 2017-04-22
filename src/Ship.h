@@ -48,6 +48,7 @@ struct Ship : public ShipShape{
     bool checkIntersect(const sf::Shape &e);
     bool checkIntersect(const sf::Sprite &e);
 
+    int bleed;
     //To id the bullets
     int sourceID;
 

@@ -38,7 +38,7 @@ const float MAX_SPEED = 6;
 const float BULLET_DAMAGE = .1;
 const int BULLET_LEN = 15;
 const int BULLET_WIDTH = 3;
-const int BULLET_SPEED = 15;
+const int BULLET_SPEED = 23;
 const int DEFAULT_BULLET_FIRERATE = 20;   //Smaller number is faster fire rate
 
 const int PHOTON_RADIUS = 30;
@@ -55,7 +55,7 @@ const int STAR_WIDTH = 2;
 const int ENEMY_HEIGHT = 30;
 const int ENEMY_WIDTH = 20;
 const float ENEMY_BULLET_SPEED = 5;
-const float ENEMY_MAX_SPEED = 2.7;
+const float ENEMY_MAX_SPEED = 3.5;
 const int DODGE_TIME = 100;
 
 
