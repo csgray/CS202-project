@@ -19,6 +19,7 @@
 #include <vector>
 #include <random>
 
+
 class World : public sf::RenderWindow{
     public:
 
@@ -62,14 +63,9 @@ class World : public sf::RenderWindow{
         // Random Real Generators
         static std::random_device ranDev;
         static std::mt19937 rng;
-
         static std::uniform_real_distribution<float> starDist;
-        static std::uniform_real_distribution<float> enemyStartingVel;
-        static std::uniform_real_distribution<float> optimalPlayerDist;
-
         static std::uniform_int_distribution<int> starBrightness;
         static std::uniform_int_distribution<int> randomInt;
-
 };
 
 #endif // WORLD_H
