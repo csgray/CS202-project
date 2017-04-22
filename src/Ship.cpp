@@ -35,7 +35,7 @@ Ship::Ship() : ShipShape(),
     setTexture(shipTexture);
     setScale(.15,.15);
     setPosition(WIDTH / 2, HEIGHT - 2.5*SHIP_RADIUS);
-    playerHealth =1.0;
+    amountOfLives = 5;
     playerIsDead = false;
     isTouchingEnemy = false;
     bleed = 0;
@@ -51,7 +51,7 @@ bool Ship::checkIntersect(const sf::Sprite &e) {
 
 Bullet* Ship::laser(){
     //Gets the x/y position
-    float bulletX = this->getPosition().x + SHIP_RADIUS;
+    float bulletX = this->getPosition().x + 1.4*SHIP_RADIUS;
     float bulletY = this->getPosition().y;
     Vector2<float> dir(0, -(float)BULLET_SPEED);
 
@@ -167,8 +167,10 @@ void Ship::update(World & world){
         photonReloadCounter += photonReloadSpeed;
     }
 
-    if(bleed <= 0) setFillColor(Color{42, 197, 224});
-    else --bleed;
+    if(bleed <= 0)
+        setColor(Color{255,255,255});
+    else
+        --bleed;
 
     //Check  if collied with an enemy
     // !!!NTF: Maybe add some damage to the enemies as well
@@ -176,16 +178,10 @@ void Ship::update(World & world){
         //If the player and an enemy intersect
         if (checkIntersect(*world.enemies[e])) {
             //minus a single life per collision
-<<<<<<< HEAD:src/Ship.cpp
-            playerHealth-=.1;
-
-            setPosition(WIDTH / 2, HEIGHT - 2.5*SHIP_RADIUS);
-            if (playerHealth <= 0) {
-=======
             amountOfLives--;
 
             //Find the center of the enemy
-            Vector2f enemyPos = world.enemies[e].getPosition();
+            Vector2f enemyPos = world.enemies[e]->getPosition();
             enemyPos.x += ENEMY_WIDTH / 2;
             enemyPos.y += ENEMY_HEIGHT / 2;
 
@@ -202,14 +198,13 @@ void Ship::update(World & world){
 
             //Apply an opposite force to the enemy
             collisionForce *= (float)-1;
-            world.enemies[e].vel += collisionForce;
+            world.enemies[e]->vel += collisionForce;
 
             //Flash red if hit by an enemy
-            setFillColor(Color{244, 66, 66, 200});
+            setColor(Color{244, 66, 66, 200});
             bleed = 10;
 
             if (amountOfLives <= 0) {
->>>>>>> enemyAI:src/Ship.cpp
                 playerIsDead=true;
                 break;
             }
@@ -224,30 +219,20 @@ void Ship::update(World & world){
             //If the bullets hits
             if(checkIntersect(*world.bullets[b])) {
                 //Remove a life
-<<<<<<< HEAD:src/Ship.cpp
-                playerHealth-=.1;
-
-                setPosition(WIDTH / 2, HEIGHT - 2.5*SHIP_RADIUS);
-=======
                 amountOfLives--;
 
                 vel += Vector2f(0, 5);
-                setFillColor(Color{244, 66, 66, 200});
+                setColor(Color{244, 66, 66, 200});
                 bleed = 5;
 
+                delete world.bullets[b];
                 world.bullets.erase(world.bullets.begin() + b);
->>>>>>> enemyAI:src/Ship.cpp
+
                 //If yr dead...
-                if (playerHealth <= 0) {
+                if (amountOfLives <= 0) {
                     playerIsDead=true;
                     break;
                 }
-<<<<<<< HEAD:src/Ship.cpp
-                delete world.bullets[b];
-                world.bullets.erase(world.bullets.begin() + b);
-=======
-
->>>>>>> enemyAI:src/Ship.cpp
             }
         }
     }

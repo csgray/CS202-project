@@ -48,6 +48,8 @@ Enemy::Enemy(Vector2f starting_pos,
 
     target = Vector2f(rngTargetWidth(rng), rngTargetHeight(rng));
     targetSwitchChance = 50;
+
+    bleed = 0;
 }
 
 bool Enemy::checkIntersect(const Bullet &b) {
@@ -90,13 +92,8 @@ Vector2f Enemy::separate(const vector<Enemy*> & enemies) {
     makeCenter(currEnemyPos, ENEMY_WIDTH / 2, ENEMY_HEIGHT / 2);
 
     //Look through all the enemies
-<<<<<<< HEAD:src/Enemy.cpp
     for(int e = 0; e < enemies.size(); ++e) {
         Vector2f pos = enemies[e]->getPosition();
-=======
-    for(int e = 0; e < (int)enemies.size(); ++e) {
-        Vector2f pos = enemies[e].getPosition();
->>>>>>> enemyAI:src/Enemy.cpp
         //Find the center of the enemy
         makeCenter(pos, ENEMY_WIDTH / 2, ENEMY_HEIGHT / 2);
 
@@ -112,11 +109,8 @@ Vector2f Enemy::separate(const vector<Enemy*> & enemies) {
     return steer;
 }
 
-<<<<<<< HEAD:src/Enemy.cpp
-Vector2f Enemy::dodge(const vector<Bullet*> & bullets) {
-=======
-Vector2f Enemy::dodge(const vector<Bullet> & bullets, bool & hasForce) {
->>>>>>> enemyAI:src/Enemy.cpp
+
+Vector2f Enemy::dodge(const vector<Bullet *> & bullets, bool & hasForce) {
     Vector2f boostForce{0,0};
 
     //look through all the bullets
@@ -185,14 +179,10 @@ void Enemy::update(World & world){
         //Have enemies periodically shoot
         if(World::randomInt(World::rng) % 300 == 0){
             //Make a bullet shooting down
-<<<<<<< HEAD:src/Enemy.cpp
-            world.bullets.push_back(new Bullet(ENEMY, pos.x, pos.y, Vector2f(0, ENEMY_BULLET_SPEED), Color{247, 168, 255}));
-=======
-            world.bullets.push_back(Bullet(ENEMY,
-                                           pos.x, pos.y,
-                                           Vector2f(0, ENEMY_BULLET_SPEED),
-                                           Color{247, 168, 255}));
->>>>>>> enemyAI:src/Enemy.cpp
+            world.bullets.push_back(new Bullet(ENEMY,
+                                               pos.x, pos.y,
+                                               Vector2f(0, ENEMY_BULLET_SPEED),
+                                               Color{247, 168, 255}));
         }
         //Randomly assign new target
         if(!(randomInt(rng) % targetSwitchChance)) {
@@ -258,7 +248,9 @@ void Enemy::update(World & world){
             if (checkIntersect(*world.bullets[b]) && world.bullets[b]->source == PLAYER) {
                 //Do damage to the enemy
                 hp -= world.bullets[b]->damage;
-
+                //Flashes red
+                setColor(Color{244, 66, 66, 200});
+                bleed = 10;
 
                 //Remove the bullet
                 delete world.bullets[b];
@@ -275,9 +267,6 @@ void Enemy::update(World & world){
                 //Do damage to the enemy
                 hp -= world.photons[p]->damage;
 
-
-
-
                 //Remove the bullet
                 delete world.photons[p];
                 world.photons.erase(world.photons.begin()+p);
@@ -285,4 +274,9 @@ void Enemy::update(World & world){
                 if(hp <= 0) return;
             }
         }
+
+        if(bleed <= 0){
+            setColor(Color(255,255,255));
+        }
+        else bleed--;
 }

@@ -40,7 +40,7 @@ struct Ship : public ShipShape{
     int photonReloadCounter;
 
     /* health */
-    float playerHealth;
+    float amountOfLives;
     bool playerIsDead;
     bool isTouchingEnemy;
     //Checks if an enemy collides with the ship
