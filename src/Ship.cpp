@@ -38,7 +38,9 @@ Ship::Ship() : ShipShape(),
     amountOfLives = 5;
     playerIsDead = false;
     isTouchingEnemy = false;
+    inInvincibleFrame = false;
     bleed = 0;
+    clock.restart();
 }
 
 bool Ship::checkIntersect(const sf::Shape &e) {
@@ -172,14 +174,24 @@ void Ship::update(World & world){
     else
         --bleed;
 
+    if (inInvincibleFrame && clock.getElapsedTime().asMilliseconds() > 1000) {
+        inInvincibleFrame = false;
+    }
+
     //Check  if collied with an enemy
     // !!!NTF: Maybe add some damage to the enemies as well
-    for (int e = world.enemies.size() - 1; e >= 0; --e) {
+
+    for (int e = world.enemies.size() - 1; !inInvincibleFrame && e >= 0; --e) {
+
         //If the player and an enemy intersect
         if (checkIntersect(*world.enemies[e])) {
             //minus a single life per collision
             amountOfLives--;
+            if (!inInvincibleFrame) {
+                inInvincibleFrame = true;
+                clock.restart();
 
+            }
             //Find the center of the enemy
             Vector2f enemyPos = world.enemies[e]->getPosition();
             enemyPos.x += ENEMY_WIDTH / 2;
@@ -213,13 +225,17 @@ void Ship::update(World & world){
     //Check if an enemy bullet hits the player
     //  !!!NTF: Separate out the player bullets and
     //          the enemy bullets into separate arrays
-    for(int b = world.bullets.size() - 1; b >= 0; --b) {
+    for(int b = world.bullets.size() - 1; !inInvincibleFrame && b >= 0; --b) {
         //If the bullet is an enemy bullet
         if(world.bullets[b]->source == ENEMY) {
             //If the bullets hits
             if(checkIntersect(*world.bullets[b])) {
                 //Remove a life
                 amountOfLives--;
+                if (!inInvincibleFrame) {
+                    inInvincibleFrame = true;
+                    clock.restart();
+                }
 
                 vel += Vector2f(0, 5);
                 setColor(Color{244, 66, 66, 200});

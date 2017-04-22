@@ -23,6 +23,8 @@ struct Ship : public ShipShape{
     sf::Vector2f vel;
     sf::Vector2f accel;
     sf::Texture shipTexture;
+    sf::Clock clock;
+    sf::Time time;
 
     /* weapons */
     //Creates a photon at the ships position
@@ -43,6 +45,7 @@ struct Ship : public ShipShape{
     float amountOfLives;
     bool playerIsDead;
     bool isTouchingEnemy;
+    bool inInvincibleFrame;
     //Checks if an enemy collides with the ship
 
     bool checkIntersect(const sf::Shape &e);
