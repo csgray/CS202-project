@@ -23,13 +23,16 @@
 class World : public Screens {
     public:
         /* Player Ship Object */
-        Ship playerShip;
+        Ship _playerShip;
+        sf::Clock _clock;
 
         /* Main Containers for game entities*/
-        std::vector<Bullet*> bullets;
-        std::vector<Photon*> photons;
-        std::vector<StarShape*> stars;
-        std::vector<Enemy*> enemies;
+        std::vector<Bullet*> _bullets;
+        std::vector<Photon*> _photons;
+        std::vector<StarShape*> _stars;
+        std::vector<Enemy*> _enemies;
+
+        void updateExplosions();
 
         void updatePhotons();
         void addPhoton(Photon p);
@@ -40,7 +43,7 @@ class World : public Screens {
         void addBullet(Bullet b);
 
         // Utility functions for stars
-        void makeStar(float startingHeight);
+        void makeStar(int startingHeight);
         void populateInitialStars();
         void updateStars();
 
@@ -69,6 +72,7 @@ class World : public Screens {
         static std::uniform_real_distribution<float> optimalPlayerDist;
 
         static std::uniform_int_distribution<int> starBrightness;
+        static std::uniform_int_distribution<int> wandererSplitNum;
         static std::uniform_int_distribution<int> randomInt;
 
 };

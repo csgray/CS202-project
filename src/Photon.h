@@ -33,16 +33,16 @@ class Photon : public Drawable, public Transformable{
             // you may also override states.shader or states.blendMode if you want
 
             // draw the vertex array
-            target.draw(vertices, states);
+            target.draw(_vertices, states);
         }
         public:
 
-        VertexArray vertices;
-        CircleShape hitBox;
-        FloatRect globalBounds;
-        int damage;
-        float frequency;
-        float moveCounter;
+        VertexArray _vertices;
+        CircleShape _hitBox;
+        FloatRect _globalBounds;
+        int _damage;
+        float _frequency;
+        float _moveCounter;
 };
 
 
