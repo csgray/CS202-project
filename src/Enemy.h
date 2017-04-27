@@ -101,7 +101,6 @@ struct Enemy : public EnemyShape
     static std::mt19937 rng;
 
     static std::uniform_real_distribution<float> rngTargetWidth;
-    static std::uniform_real_distribution<float> rngTargetHeight;
     static std::uniform_real_distribution<float> rngFollowerHeight;
     static std::uniform_int_distribution<int> randomInt;
 };

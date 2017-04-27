@@ -25,8 +25,10 @@ sf::Sprite startLabel;
 sf::Sprite continueLabel;
 sf::Sprite exitLabel;
 
+
+
 //Initial Menu Setup
-void initialDraw(sf::RenderWindow &gameMenu, bool drawMenu){
+void initialDraw(sf::RenderWindow &gameMenu, bool drawMenu, bool playing){
     load_texture(labelTexture, labelFilePath);
 
     startLabel.setTexture(labelTexture);
@@ -58,7 +60,7 @@ void initialDraw(sf::RenderWindow &gameMenu, bool drawMenu){
     shape2.setFillColor(sf::Color::Red);
 
     gameMenu.clear();
-    gameMenu.draw(startLabel);
+    (playing) ? gameMenu.draw(continueLabel) : gameMenu.draw(startLabel);
     gameMenu.draw(exitLabel);
     gameMenu.display();
     drawMenu = false;
@@ -74,7 +76,7 @@ int MenuScreen::Run(sf::RenderWindow &gameMenu){
         gameMenu.draw(shape);
     }
 
-    if(drawMenu) initialDraw(gameMenu,drawMenu);
+    if(drawMenu) initialDraw(gameMenu,drawMenu, playing);
 
     while(true){
         //check SFML events

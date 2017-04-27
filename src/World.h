@@ -32,7 +32,6 @@ class World : public Screens {
         std::vector<StarShape*> _stars;
         std::vector<Enemy*> _enemies;
 
-
         void updateExplosions();
 
         void updatePhotons();
@@ -73,6 +72,7 @@ class World : public Screens {
         static std::uniform_real_distribution<float> optimalPlayerDist;
 
         static std::uniform_int_distribution<int> starBrightness;
+        static std::uniform_int_distribution<int> wandererSplitNum;
         static std::uniform_int_distribution<int> randomInt;
 
 };

@@ -85,7 +85,6 @@ const int DODGE_ANIMATION_TIME = 20;
 
 const float SEEKER_PLAYERSEEKER_FORCE = 0.5F;
 const float SEEKER_SPEED = 8.0F;
-const float SPLIT_NUMBER = 3;
 
 // Wanderers (dodge shots and randomly move)
 const float WANDERER_TARGET_FORCE = 0.17F;
@@ -95,7 +94,7 @@ const int WANDERER_TARGET_SWITCH = 120;
 // Followers (lines up with players and shoots)
 const float FOLLOWER_BULLET_DODGE = 8.0F;
 const float FOLLOWER_MAXSPEED = 4.5F;
-const float FOLLOWER_TARGET_FORCE = 0.18F;
+const float FOLLOWER_TARGET_FORCE = 0.3F;
 const int FOLLOWER_TARGET_SWITCH = 40;
 
 // Bullet _source values

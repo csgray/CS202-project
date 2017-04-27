@@ -32,15 +32,17 @@ using std::sin;
 using std::floor;
 
 
-// Setup for random real number generator for _stars
+// Initialize the static random objects for random number generation through game
 std::random_device World::ranDev;
 std::mt19937 World::rng = std::mt19937(ranDev());
+
 std::uniform_real_distribution<float> World::starDist(0.0,(float)WIDTH);
 std::uniform_real_distribution<float> World::enemyStartingVel(-10.,10.);
 std::uniform_real_distribution<float> World::optimalPlayerDist(HEIGHT / 2, HEIGHT - 100);
+
 std::uniform_int_distribution<int> World::randomInt(-1000, 1000);
 std::uniform_int_distribution<int> World::starBrightness(100, 255);
-
+std::uniform_int_distribution<int> World::wandererSplitNum(3,6);
 
 ///////////////////////////STAR FUNCTIONS/////////////////////////////////
 // Creates a new star
@@ -178,6 +180,7 @@ void World::makeInitEnemies(){
         //Makes a seeker at a random width at the top of the screen
         _enemies.push_back(make_follower());
     }
+    numSeekers++;
     numWanderers++;
     numFollowers++;
 }
@@ -195,8 +198,10 @@ void World::updateEnemies(){
                 _playerShip._playerScore+=25;
                 //Split the wanderers into 2 seekers
                 if(_enemies[e]->_traits._bulletDodgeForce == 0 && _enemies[e]->_traits._seekTargetForce) {
+                    //Random split number between 2 and 5
+                    size_t splitNum = wandererSplitNum(rng);
                     //Splits the wander
-                    for(int i = 0; i < SPLIT_NUMBER; i++) {
+                    for(size_t i = 0; i < splitNum; i++) {
                         Enemy * newSeeker = make_seeker();
                         newSeeker->setPosition(pos);
                         _enemies.push_back(newSeeker);
