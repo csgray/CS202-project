@@ -1,10 +1,11 @@
-// constants.h
-// CS 202 Project: Scrolling Space Shooter
-// Team Members: William Horn, Corey Gray, Michael Bilan, Cameron Titus, Kyle Tam, Andrew Cummins
-// Created: 20170407
-// Updated: 20170425
-//
-// Constants related to all parts of the game
+/*
+constants.h
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 7/4/2017
+Last Updated: 26/4/2017
+Constants games constants used by several game files
+*/
 
 #ifndef GAME_CONSTANTS_H_INCLUDED
 #define GAME_CONSTANTS_H_INCLUDED

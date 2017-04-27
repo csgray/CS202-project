@@ -1,7 +1,12 @@
-//Asteroid.h
-//Auth: William Horn
-//4.12.2017
-//Definitions for Asteroid class
+/*
+Photon.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 12/4/2017
+Last Updated: 26/4/2017
+<brief text description of file; feel free to update these>
+*/
+
 #ifndef PHOTON_H
 #define PHOTON_H
 
