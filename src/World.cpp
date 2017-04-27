@@ -1,12 +1,11 @@
-// world.cpp
-// CS 202 Project: Scrolling Space Shooter
-// Team Members: William Horn, Corey Gray, Michael Bilan, Cameron Titus, Kyle Tam, Andrew Cummins
-// Created: 20170409
-// Updated: 20170412
-//
-// Definitions and constructor for World class
-
-//Ctor for  world class
+/*
+World.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 9/4/2017
+Last Updated: 26/4/2017
+Defines functions and object behavior for game screen objects (including background management).
+*/
 
 #include "constants.h"
 #include "World.h"
@@ -264,25 +263,25 @@ void World::show(sf::RenderWindow &gameScreen){
     for(const auto & e : _enemies){
         gameScreen.draw(*e);
     }
-
-    gameScreen.draw(_playerShip);
-
     if (!_playerShip._playerIsDead) {
-    //Draw health bar
-    gameScreen.draw(_playerShip._hpBar._currentHealthBar);
-    gameScreen.draw(_playerShip._hpBar._maxHealthBar);
-    //Draw reload bars
-    gameScreen.draw(_playerShip._photonReloadBar._currentHealthBar);
-    gameScreen.draw(_playerShip._photonReloadBar._maxHealthBar);
+        gameScreen.draw(_playerShip);
+        //Draw health bar
+        gameScreen.draw(_playerShip._hpBar._currentHealthBar);
+        gameScreen.draw(_playerShip._hpBar._maxHealthBar);
+        //Draw reload bars
+        gameScreen.draw(_playerShip._photonReloadBar._currentHealthBar);
+        gameScreen.draw(_playerShip._photonReloadBar._maxHealthBar);
 
-    gameScreen.draw(_playerShip._laserReloadBar._currentHealthBar);
-    gameScreen.draw(_playerShip._laserReloadBar._maxHealthBar);
+        gameScreen.draw(_playerShip._laserReloadBar._currentHealthBar);
+        gameScreen.draw(_playerShip._laserReloadBar._maxHealthBar);
+
     }
 }
 
 int World::Run(sf::RenderWindow &gameScreen){
     sf::Event event;
 
+    //draw loop
     while(true){
         while(gameScreen.pollEvent(event)){
             if(event.type == sf::Event::Closed) return -1;

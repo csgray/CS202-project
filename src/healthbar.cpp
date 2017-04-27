@@ -1,7 +1,12 @@
-//Kyle Tam
-//Healthbar.cpp
-// 4-22-17
-//Last Rev 4-22-17
+/*
+healthbar.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 22/4/2017
+Last Updated: 26/4/2017
+Defines characteristics of ship class objects.w
+*/
+
 
 #include "healthbar.h"
 #include "constants.h"

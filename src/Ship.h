@@ -1,7 +1,12 @@
-//Ship.h
-//Auth : William Horn
-//4.12.2017
-//Header for ship class
+/*
+Ship.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 12/4/2017
+Last Updated: 26/4/2017
+Ship class
+*/
+
 
 #ifndef SHIP_H
 #define SHIP_H
@@ -24,10 +29,8 @@ struct Ship : public ShipShape{
     sf::Vector2f _vel;
     sf::Vector2f _accel;
     sf::Texture _shipTexture;
-    sf::Texture _explosionTexture;
     sf::Clock _clock;
     sf::Time _time;
-
 
     /* weapons */
     //Creates a photon at the ships position

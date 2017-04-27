@@ -1,7 +1,12 @@
-//Enemy.cpp
-//Auth: William Horn
-//4.10.2017
-//Definitions for Enemy class
+/*
+Enemy.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 10/4/2017
+Last Updated: 26/4/2017
+
+*/
+
 
 #include "Enemy.h"
 #include "World.h"
@@ -25,7 +30,6 @@ std::uniform_real_distribution<float> Enemy::rngTargetHeight(ENEMY_WIDTH, HEIGHT
 std::uniform_real_distribution<float> Enemy::rngFollowerHeight(HEIGHT / 5, HEIGHT * (2 / 5.0));
 std::uniform_int_distribution<int> Enemy::randomInt(-2000000, 2000000);
 
-//Ctor
 Enemy::Enemy(Vector2f &startingPos,
              Vector2f &startingVel,
              int health,

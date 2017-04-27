@@ -1,8 +1,11 @@
-/*Screen_0.h
-Team Members: William Horn, Corey Gray, Michael Bilan, Cameron Titus, Kyle Tam, Andrew Cummins
+/*
+Screens_0.h
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
 Created: 17/4/2017
-Updated: 17/4/2017
-Screen_0 inherits from the Screens.h virtual class; it is an object that controls the menu screen.*/
+Last Updated: 26/4/2017
+Creates a new derivative class to manage the menu screen, inheriting directly from the Screens class.
+*/
 
 #ifndef SCREEN0_H_INCLUDED
 #define SCREEN0_H_INCLUDED
