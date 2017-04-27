@@ -18,11 +18,12 @@
 #include "powerup.h"
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 #include <vector>
 #include <random>
 
-class World : public Screens
-{
+
+class World : public Screens {
     public:
 		// Constructor and destructor
 		World();
@@ -31,6 +32,10 @@ class World : public Screens
         // Player Ship Object
         Ship _playerShip;
         sf::Clock _clock;
+        sf::SoundBuffer _bgBuffer;
+        sf::Sound _bgSound;
+        sf::SoundBuffer _gameOverBuffer;
+        sf::Sound _gameOverSound;
 
         // Main Containers for game entities
         std::vector<Bullet*> _bullets;

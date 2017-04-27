@@ -16,6 +16,7 @@
 
 #include <vector>
 #include <SFML/Graphics.hpp>
+#include <SFML/Audio.hpp>
 
 class World;
 
@@ -28,6 +29,12 @@ struct Ship : public ShipShape
 	sf::Vector2f _vel;
 	sf::Vector2f _accel;
 	sf::Texture _shipTexture;
+	sf::SoundBuffer _photonBuffer;
+    sf::SoundBuffer _laserBuffer;
+    sf::SoundBuffer _explosionBuffer;
+    sf::Sound _photonSound;
+    sf::Sound _laserSound;
+    sf::Sound _explosionSound;
 	sf::Clock _clock;
 	sf::Time _time;
 

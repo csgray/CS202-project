@@ -48,6 +48,12 @@ Ship::Ship() : ShipShape(),
 	setScale(.75,.75);
     setTextureRect(sf::IntRect(0,5,57,98));
 
+    //Load ship sound files
+    load_buffer(_laserBuffer, "resources/sound/laserSound.wav");
+    _laserSound.setBuffer(_laserBuffer);
+    load_buffer(_photonBuffer,"resources/sound/photonSound.wav");
+    _photonSound.setBuffer(_photonBuffer);
+
 	// Starting position
     setPosition(WIDTH / 2, HEIGHT - 2.5*SHIP_RADIUS);
 
@@ -255,10 +261,10 @@ void Ship::update(World & world)
     if(((_laserReloadCounter >= _laserReloadTime) && (Keyboard::isKeyPressed(Keyboard::Space))) ||
        ((_laserReloadCounter >= _laserReloadTime) && (sf::Joystick::getAxisPosition(0,sf::Joystick::Z) < -98)))
     {
-        //Fires a bullet from the player ship
         if(!_hasDoubleLaser)
         {
             world._bullets.push_back(laser());
+            _laserSound.play();
         }
         else
         { //HAS DOUBLE LASER!!!
@@ -279,6 +285,7 @@ void Ship::update(World & world)
             bullet1->setScale(0.7F, 1);
             bullet2->setScale(0.7F, 1);
 
+            _laserSound.play();
             world._bullets.push_back(bullet1);
             world._bullets.push_back(bullet2);
         }
@@ -294,6 +301,7 @@ void Ship::update(World & world)
        _photonReloadCounter >= _photonReloadTime && sf::Joystick::isButtonPressed(0, X))
     {
         //Shoots a photon
+        _photonSound.play();
         world._photons.push_back(photonCannon());
     }
     // Add to the reload counter if it's not full
@@ -440,7 +448,7 @@ void Ship::update(World & world)
         }
     }
 
-    // Move the players ship
+    // Move the players ship, changes texture based on velocity
     move(_vel);
 
     if(_vel.x < -SWITCH_THRESHHOLD)
