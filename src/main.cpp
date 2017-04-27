@@ -23,15 +23,16 @@ int main(){
     int screenSelect=0;
 
     //create game window
-    sf::RenderWindow App(sf::VideoMode(WIDTH, HEIGHT), "SPACE GAME");
+    sf::RenderWindow App(sf::VideoMode((unsigned)WIDTH, (unsigned)HEIGHT), "SPACE GAME");
     App.setFramerateLimit(FRAMERATE);
 
     //hide mouse cursor
     App.setMouseCursorVisible(false);
 
-    //Make screens
+    //Make main menu
     MenuScreen ms;
     screens.push_back(&ms);
+    //Make game world
     World gw;
     screens.push_back(&gw);
 

@@ -4,8 +4,14 @@ Created: 17/4/2017
 Updated: 17/4/2017
 Screen_0 is the game menu screen.*/
 
-#include <iostream>
 #include "Screen_0.h"
+#include "Loader.h"
+#include "constants.h"
+
+#include <SFML/Graphics.hpp>
+#include <iostream>
+#include <string>
+using std::string;
 
 //GameMenu Constants
 bool drawMenu = true;
@@ -13,8 +19,20 @@ bool playing = false;
 sf::CircleShape shape;
 sf::CircleShape shape2;
 
+string labelFilePath = "resources/sprites/LABELS.png";
+sf::Texture newGameLabelTexture;
+sf::Sprite newGameLabel;
+
+
+
 //Initial Menu Setup
 void initialDraw(sf::RenderWindow &gameMenu, bool drawMenu){
+    load_texture(newGameLabelTexture, labelFilePath);
+    newGameLabel.setTexture(newGameLabelTexture);
+    newGameLabel.setTextureRect(sf::IntRect(0,0, 160, 63));
+    newGameLabel.setOrigin(160 / 2, 63 / 2.0);
+    newGameLabel.setPosition(250,200);
+
     shape.setRadius(50);
     shape.setOrigin(shape.getRadius(),shape.getRadius());
     shape.setPosition(250, 200);
@@ -28,6 +46,7 @@ void initialDraw(sf::RenderWindow &gameMenu, bool drawMenu){
     gameMenu.clear();
     gameMenu.draw(shape);
     gameMenu.draw(shape2);
+    gameMenu.draw(newGameLabel);
     gameMenu.display();
     drawMenu = false;
 }
@@ -73,6 +92,27 @@ int MenuScreen::Run(sf::RenderWindow &gameMenu){
                         break;
                 }
             }
+            //Use the joystick to check the input
+            int detectionThreshold = 98;
+            if(sf::Joystick::isConnected(0)){
+                //If the joystick is pressed halfway up just select
+                if(sf::Joystick::getAxisPosition(0,sf::Joystick::Y) <= -detectionThreshold / 2) {
+                    menuSelect = 0;
+                    //If the right trigger is pushed
+
+                }
+                if (sf::Joystick::isButtonPressed(0, A) && menuSelect == 0){
+                            playing=true;
+                            return 1; //starts game
+                    }
+                if(sf::Joystick::getAxisPosition(0,sf::Joystick::Y) >= detectionThreshold / 2) {
+                    menuSelect = 1;
+                }
+                if (sf::Joystick::isButtonPressed(0, A) && menuSelect == 1) {
+                        return -1;
+                }
+
+            }
             //update menu text colors based on selection
             if(menuSelect==0){
                 shape.setFillColor(sf::Color::Blue);
@@ -103,6 +143,7 @@ int MenuScreen::Run(sf::RenderWindow &gameMenu){
             //display the screen
             gameMenu.draw(shape);
             gameMenu.draw(shape2);
+            gameMenu.draw(newGameLabel);
             gameMenu.display();
         }
     }

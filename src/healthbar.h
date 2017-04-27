@@ -17,8 +17,8 @@ public:
     void setCurrentHealthBar(float hpPercentage);
     void setCurrVertical(float hpPercentage);
 
-    HPBarShape maxHealthBar;
-    HPBarShape currentHealthBar;
+    HPBarShape _maxHealthBar;
+    HPBarShape _currentHealthBar;
 
 };
 

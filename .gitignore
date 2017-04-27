@@ -11,3 +11,11 @@
 *.layout
 
 *.gch
+
+# Visual Studio
+*.vs
+*.VC.db
+*.sln
+*.vcxproj
+*.vcxproj.filters
+Debug
