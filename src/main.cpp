@@ -1,8 +1,15 @@
-
-//asteroids.cpp
-//CS 202 Final Proj
-//Auth: William Horn
-//Rough draft for game framework
+/*
+main.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 9/4/2017
+Last Updated: 26/4/2017
+main.cpp contains the game RenderWindow object, as well as stores a vector of pointers to Screens objects (pure virtual).
+New screens are declared in main and stored the the Screens vector by reference; additional screens can be implemented in
+main by adding the appropriate header file include, creating a new screen object (must inherit from Screens.h) and storing
+it in the screens vector.
+The runtime loop manages screens by setting the screenSelect to a value return by each screen's run function.
+*/
 
 #include "constants.h"
 #include "Screens.h"
@@ -23,15 +30,16 @@ int main(){
     int screenSelect=0;
 
     //create game window
-    sf::RenderWindow App(sf::VideoMode(WIDTH, HEIGHT), "SPACE GAME");
+    sf::RenderWindow App(sf::VideoMode((unsigned)WIDTH, (unsigned)HEIGHT), "SPACE GAME");
     App.setFramerateLimit(FRAMERATE);
 
     //hide mouse cursor
     App.setMouseCursorVisible(false);
 
-    //Make screens
+    //Make main menu
     MenuScreen ms;
     screens.push_back(&ms);
+    //Make game world
     World gw;
     screens.push_back(&gw);
 

@@ -1,10 +1,12 @@
-// world.h
-// CS 202 Project: Scrolling Space Shooter
-// Team Members: William Horn, Corey Gray, Michael Bilan, Cameron Titus, Kyle Tam, Andrew Cummins
-// Created: 20170409
-// Updated: 20170412
-//
-// Header for World class
+/*
+World.h
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 9/4/2017
+Last Updated: 26/4/2017
+World manages the game screen, and is a derivative of Screens. Class contains all objects and functions used to manage
+the game screen.
+*/
 
 #ifndef WORLD_H
 #define WORLD_H
@@ -23,13 +25,13 @@
 class World : public Screens {
     public:
         /* Player Ship Object */
-        Ship playerShip;
+        Ship _playerShip;
 
         /* Main Containers for game entities*/
-        std::vector<Bullet*> bullets;
-        std::vector<Photon*> photons;
-        std::vector<StarShape*> stars;
-        std::vector<Enemy*> enemies;
+        std::vector<Bullet*> _bullets;
+        std::vector<Photon*> _photons;
+        std::vector<StarShape*> _stars;
+        std::vector<Enemy*> _enemies;
 
         void updatePhotons();
         void addPhoton(Photon p);
@@ -40,7 +42,7 @@ class World : public Screens {
         void addBullet(Bullet b);
 
         // Utility functions for stars
-        void makeStar(float startingHeight);
+        void makeStar(int startingHeight);
         void populateInitialStars();
         void updateStars();
 

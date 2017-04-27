@@ -1,7 +1,11 @@
-//Enemy.h
-//Auth: William Horn
-//4.20.2017
-//Class header to represent base enemy
+/*
+Enemy.h
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 20/4/2017
+Last Updated: 26/4/2017
+<brief text description of file; feel free to update these>
+*/
 
 #ifndef ENEMY_H
 #define ENEMY_H
@@ -18,81 +22,81 @@
 #include <string>
 #include <functional>
 
-struct Traits {
+struct Traits
+{
     Traits(float playerSeek,
            float targetSeek,
            int switchChance,
            float bulletDodge,
            float speed,
            bool gun,
-           float separate = ENEMY_SEPARATE_FORCE) : seekPlayerForce(playerSeek),
-                                                    seekTargetForce(targetSeek),
-                                                    targetSwitchChance(switchChance),
-                                                    bulletDodgeForce(bulletDodge),
-                                                    maxSpeed(speed),
-                                                    hasGun(gun),
-                                                    separateForce(separate){}
+           float separate = ENEMY_SEPARATE_FORCE) : _seekPlayerForce(playerSeek),
+                                                    _seekTargetForce(targetSeek),
+                                                    _targetSwitchChance(switchChance),
+                                                    _bulletDodgeForce(bulletDodge),
+                                                    _maxSpeed(speed),
+                                                    _hasGun(gun),
+                                                    _separateForce(separate){}
 
-    float seekPlayerForce;
-    float seekTargetForce;
-    int targetSwitchChance;
-    float bulletDodgeForce;
+    float _seekPlayerForce;
+    float _seekTargetForce;
+    int _targetSwitchChance;
+    float _bulletDodgeForce;
+    float _maxSpeed;
+    bool _hasGun;
+    float _separateForce;
 
-    float  maxSpeed;
-    bool hasGun;
-    float separateForce;
-
-
-    //A variable function for setting the target
-    //2 possible types
-    //  -random x, random y
-    //  -player x, random y
+    // A variable function for setting the target
+    // 2 possible types:
+    //   -random x, random y
+    //   -player x, random y
     std::function<Vector2f(const ShipShape & ship)> setTarget;
 };
 
 class World;
 
-struct Enemy : public EnemyShape{
-
-    Enemy(sf::Vector2f starting_pos,
-          sf::Vector2f starting_vel,
-          int hp, int damage,
-          Traits enemyTraits,
+struct Enemy : public EnemyShape
+{
+    Enemy(sf::Vector2f &startingPos,
+          sf::Vector2f &startingVel,
+          int hp,
+		  int damage,
+          Traits &enemyTraits,
           std::string textureFilePath = "resources/sprites/eyeball.png");
 
-    Vector2f vel;
-    Vector2f accel;
-    float maxSpeed;
-    sf::Texture enemyTexture;
+    Vector2f _vel;
+    Vector2f _accel;
+    float _maxSpeed;
+    sf::Texture _enemyTexture;
+	Traits _traits;
 
-    Traits traits;
+    // Used to periodically dodge bullets
+    Vector2f dodge(const std::vector<Bullet *> &bullets, bool &hasForce);
+    int _dodgeChargeTime;
+    int _dodgeCounter;
 
-    //Used to periodically dodge bullets
-    Vector2f dodge(const std::vector<Bullet *> & bullets, bool & hasForce);
-    int dodgeChargeTime;
-    int dodgeCounter;
+    // Push away from other enemies
+    Vector2f separate(const std::vector<Enemy*> &enemies);
 
-    //Push away from other enemies
-    Vector2f separate(const std::vector<Enemy*> & enemies);
-    //Pull in the direction of the player
-    Vector2f seekPlayer(const Ship & playerShip);
-    //Seek a random target
+	// Pull in the direction of the player
+    Vector2f seekPlayer(const Ship &playerShip);
+
+	// Seek a random target
     Vector2f seekTarget();
-    Vector2f target;
+    Vector2f _target;
 
+    float _enemyDetectionRadius;
+    float _bulletDetectionRadius;
+    float _desiredPlayerDist;
 
-    float enemyDetectionRadius;
-    float bulletDetectionRadius;
-    float desiredPlayerDist;
+    int _hp;
+    int _damage;
+    int _sourceID;
 
-    int hp;
-    int damage;
-    int sourceID;
-
-    int bleed;
+    int _bleed;
 
     bool checkIntersect(const Bullet &b);
-    void update(World & world);
+    void update(World &world);
 
     static std::random_device ranDev;
     static std::mt19937 rng;
@@ -103,10 +107,9 @@ struct Enemy : public EnemyShape{
     static std::uniform_int_distribution<int> randomInt;
 };
 
-//Factory function for making the different types of enemies
+// Factory functions for making the different types of enemies
 Enemy * make_seeker();
 Enemy * make_wanderer();
 Enemy * make_follower();
-
 
 #endif // ENEMY_H

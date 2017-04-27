@@ -1,7 +1,11 @@
-//Ship.cpp
-//Auth : William Horn
-//4.12.2017
-//Definitions for ship class
+/*
+Ship.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 12/4/2017
+Last Updated: 26/4/2017
+Defines characteristics of ship class objects.
+*/
 
 #include "Ship.h"
 #include "World.h"
@@ -21,56 +25,56 @@ using std::vector;
 #include "Loader.h"
 
 Ship::Ship() : ShipShape(),
-               vel(Vector2f(0.0, 0.0)),
-               accel(Vector2f(0.0, 0.0)),
-               laserReloadTime(DEFAULT_BULLET_FIRERATE),
-               laserReloadSpeed(1),
-               laserReloadCounter(0),
-               photonReloadTime(DEFAULT_PHOTON_FIRERATE),
-               photonReloadSpeed(1),
-               photonReloadCounter(photonReloadTime),
-               photonReloadBar(ReloadBar(RELOAD_BAR_HEIGHT, RELOAD_BAR_WIDTH)),
-               laserReloadBar(ReloadBar(RELOAD_BAR_HEIGHT, RELOAD_BAR_WIDTH)),
-               health(STARTING_HP),
-               maxHP(health),
-               playerScore(0),
-               hpBar(HealthBar()),
-               sourceID(PLAYER)
+               _vel(Vector2f(0.0, 0.0)),
+               _accel(Vector2f(0.0, 0.0)),
+               _laserReloadTime(DEFAULT_BULLET_FIRERATE),
+               _laserReloadSpeed(1),
+               _laserReloadCounter(0),
+               _photonReloadTime(DEFAULT_PHOTON_FIRERATE),
+               _photonReloadSpeed(1),
+               _photonReloadCounter(_photonReloadTime),
+               _photonReloadBar(ReloadBar(RELOAD_BAR_HEIGHT, RELOAD_BAR_WIDTH)),
+               _laserReloadBar(ReloadBar(RELOAD_BAR_HEIGHT, RELOAD_BAR_WIDTH)),
+               _health(STARTING_HP),
+               _maxHP(_health),
+               _playerScore(0),
+               _hpBar(HealthBar()),
+               _sourceID(PLAYER)
 
 {
-    load_texture(shipTexture,"resources/sprites/MiG-51S.png");
-    setTexture(shipTexture);
+    load_texture(_shipTexture,"resources/sprites/MiG-51S.png");
+    setTexture(_shipTexture);
 
     setScale(.75,.75);
     setTextureRect(sf::IntRect(0,5,57,98));
 
     setPosition(WIDTH / 2, HEIGHT - 2.5*SHIP_RADIUS);
-    playerIsDead = false;
-    isTouchingEnemy = false;
-    inInvincibleFrame = false;
-    bleed = 0;
-    clock.restart();
+    _playerIsDead = false;
+    _isTouchingEnemy = false;
+    _inInvincibleFrame = false;
+    _bleed = 0;
+    _clock.restart();
 
-    hpBar.setCurrentHealthBar(1.0);
-    photonReloadBar.setCurrentHealthBar(1.0);
-    laserReloadBar.setCurrentHealthBar(1.0);
+    _hpBar.setCurrentHealthBar(1.0);
+    _photonReloadBar.setCurrentHealthBar(1.0);
+    _laserReloadBar.setCurrentHealthBar(1.0);
 
-    int reloadBarBuffer = 5;
+    float reloadBarBuffer = 5.0F;
 
-    photonReloadBar.currentHealthBar.rotate(180);
-    laserReloadBar.currentHealthBar.rotate(180);
+    _photonReloadBar._currentHealthBar.rotate(180);
+    _laserReloadBar._currentHealthBar.rotate(180);
 
     //Change the positions of the reload bars
-    laserReloadBar.currentHealthBar.setPosition(Vector2f(reloadBarBuffer + RELOAD_BAR_HEIGHT, HEIGHT - reloadBarBuffer));
-    laserReloadBar.maxHealthBar.setPosition(Vector2f(reloadBarBuffer, HEIGHT - reloadBarBuffer - RELOAD_BAR_WIDTH));
-    photonReloadBar.currentHealthBar.setPosition(Vector2f(2.5*reloadBarBuffer + 2*RELOAD_BAR_HEIGHT, HEIGHT - reloadBarBuffer));
-    photonReloadBar.maxHealthBar.setPosition(Vector2f(2.5*reloadBarBuffer + RELOAD_BAR_HEIGHT, HEIGHT - reloadBarBuffer - RELOAD_BAR_WIDTH));
+    _laserReloadBar._currentHealthBar.setPosition(Vector2f(reloadBarBuffer + RELOAD_BAR_HEIGHT, HEIGHT - reloadBarBuffer));
+    _laserReloadBar._maxHealthBar.setPosition(Vector2f(reloadBarBuffer, HEIGHT - reloadBarBuffer - RELOAD_BAR_WIDTH));
+    _photonReloadBar._currentHealthBar.setPosition(Vector2f(2.5F*reloadBarBuffer + 2*RELOAD_BAR_HEIGHT, HEIGHT - reloadBarBuffer));
+    _photonReloadBar._maxHealthBar.setPosition(Vector2f(2.5F*reloadBarBuffer + RELOAD_BAR_HEIGHT, HEIGHT - reloadBarBuffer - RELOAD_BAR_WIDTH));
 
-    photonReloadBar.currentHealthBar.setFillColor(Color(66, 164, 244));
-    laserReloadBar.currentHealthBar.setFillColor(Color(244, 163, 65));
+    _photonReloadBar._currentHealthBar.setFillColor(Color(66, 164, 244));
+    _laserReloadBar._currentHealthBar.setFillColor(Color(244, 163, 65));
 
-    photonReloadBar.maxHealthBar.setOutlineThickness(2);
-    laserReloadBar.maxHealthBar.setOutlineThickness(2);
+    _photonReloadBar._maxHealthBar.setOutlineThickness(2);
+    _laserReloadBar._maxHealthBar.setOutlineThickness(2);
 
 }
 
@@ -90,7 +94,7 @@ Bullet* Ship::laser(){
 
     Bullet* newBullet = new Bullet(PLAYER, bulletX, bulletY, dir);
 
-    laserReloadCounter = 0;
+    _laserReloadCounter = 0;
     return newBullet;
 }
 
@@ -102,7 +106,7 @@ Photon* Ship::photonCannon(){
 
     newPhoton->setPhotonPosition(X, Y);
 
-    photonReloadCounter = 0;
+    _photonReloadCounter = 0;
     return newPhoton;
 }
 
@@ -122,7 +126,7 @@ void Ship::update(World & world){
            xAccel = (float)-PLAYER_X_ACCEL*(sf::Joystick::getAxisPosition(0,sf::Joystick::X) / -100);
         else
             xAccel = -PLAYER_X_ACCEL;
-        accel += Vector2f(xAccel, 0);
+        _accel += Vector2f(xAccel, 0);
     }
 
     //RIGHT ARROW TO MOVE RIGHT
@@ -132,7 +136,7 @@ void Ship::update(World & world){
             xAccel = (float)PLAYER_X_ACCEL*(sf::Joystick::getAxisPosition(0,sf::Joystick::X) / 100);
         else
             xAccel = PLAYER_X_ACCEL;
-        accel += Vector2f(xAccel, 0);
+        _accel += Vector2f(xAccel, 0);
     }
 
     //UP ARROW TO MOVE UP
@@ -142,7 +146,7 @@ void Ship::update(World & world){
             yAccel = (float)-PLAYER_Y_ACCEL*(sf::Joystick::getAxisPosition(0,sf::Joystick::Y) / -100);
         else
             yAccel = -PLAYER_Y_ACCEL;
-        accel += Vector2f(0, yAccel);
+        _accel += Vector2f(0, yAccel);
     }
     //DOWN ARROW TO MOVE DOWN
     if(Keyboard::isKeyPressed(Keyboard::Down) || (Keyboard::isKeyPressed((Keyboard::S)))
@@ -151,100 +155,102 @@ void Ship::update(World & world){
                 yAccel = (float)PLAYER_Y_ACCEL*(sf::Joystick::getAxisPosition(0,sf::Joystick::Y) / 100);
             else
                 yAccel = PLAYER_Y_ACCEL;
-            accel += Vector2f(0, yAccel);
+            _accel += Vector2f(0, yAccel);
     }
-    //Add the acceleration to the velocity
-    vel += accel;
+    //Add the acceleration to the _velocity
+    _vel += _accel;
 
-    accel *= (float)0;
+    _accel *= (float)0;
 
     //Slight drag to make things easier to control
-    vel *= (float)SHIP_DRAG;
+    _vel *= (float)SHIP_DRAG;
 
-    float velocityMag = sqrt(vel.y * vel.y + vel.x * vel.x);
+    float velocityMag = sqrt(_vel.y * _vel.y + _vel.x * _vel.x);
     //Going faster then the max speed
     if(velocityMag >= MAX_SPEED) {
         //Normalize
-        vel /= (float)velocityMag;
+        _vel /= (float)velocityMag;
 
 
         //Scale to the max speed
-        vel *= (float)MAX_SPEED;
+        _vel *= (float)MAX_SPEED;
 
     }
     //Check if the ship is on a bound
     if(world.onBound(*this)[0] == RIGHT) {
         //If the ship has a rightward(?) velocity
-        if(vel.x > 0) {
-            vel.x = 0;
+        if(_vel.x > 0) {
+            _vel.x = 0;
         }
     }
     if(world.onBound(*this)[1] == LEFT) {
         //If the ship has a leftward(?) velocity
-        if(vel.x < 0) {
-            vel.x = 0;
+        if(_vel.x < 0) {
+            _vel.x = 0;
         }
     }
 
     if(world.onBound(*this)[2] == UPPER) {
         //If the ship has a upward velocity
-        if(vel.y < 0) {
-            vel.y = 0;
+        if(_vel.y < 0) {
+            _vel.y = 0;
         }
     }
     if(world.onBound(*this)[3] == LOWER) {
         //If the ship has a downward velocity
-        if(vel.y > 0) {
-            vel.y = 0;
+        if(_vel.y > 0) {
+            _vel.y = 0;
         }
     }
 
     /////////////////weapons and enemies////////////////
 
     //if the reload counter is full and the button is pressed
-    if(laserReloadCounter >= laserReloadTime && Keyboard::isKeyPressed(Keyboard::Space) ||
-       laserReloadCounter >= laserReloadTime && sf::Joystick::getAxisPosition(0,sf::Joystick::Z) < -98){
+    if((_laserReloadCounter >= _laserReloadTime && Keyboard::isKeyPressed(Keyboard::Space)) ||
+       (_laserReloadCounter >= _laserReloadTime && sf::Joystick::getAxisPosition(0,sf::Joystick::Z) < -98)) {
         //Fires a bullet from the player ship
-        world.bullets.push_back(laser());
+        world._bullets.push_back(laser());
     }
     //Add to the reload counter if it's not full
-    if(laserReloadCounter <= laserReloadTime){
-        laserReloadCounter += laserReloadSpeed;
+    if(_laserReloadCounter <= _laserReloadTime){
+        _laserReloadCounter += _laserReloadSpeed;
     }
     //if the reload counter is full and the button is pressed
-    if(photonReloadCounter >= photonReloadTime && Keyboard::isKeyPressed(Keyboard::E) ||
-       photonReloadCounter >= photonReloadTime && sf::Joystick::getAxisPosition(0,sf::Joystick::Z) > 0) {
+
+    if(_photonReloadCounter >= _photonReloadTime && Keyboard::isKeyPressed(Keyboard::E) ||
+       _photonReloadCounter >= _photonReloadTime && sf::Joystick::isButtonPressed(0, X)) {
+
         //Shoots a photon
-        world.photons.push_back(photonCannon());
+        world._photons.push_back(photonCannon());
 
     }
     //Add to the reload counter if it's not full
-     if(photonReloadCounter <= photonReloadTime) {
-        photonReloadCounter += photonReloadSpeed;
+     if(_photonReloadCounter <= _photonReloadTime) {
+        _photonReloadCounter += _photonReloadSpeed;
     }
 
-    if(bleed <= 0) setColor(Color{255,255,255});
-    else --bleed;
+    if(_bleed <= 0) setColor(Color{255,255,255});
+    else --_bleed;
 
-    if (inInvincibleFrame && clock.getElapsedTime().asMilliseconds() > 500) {
-        inInvincibleFrame = false;
+    if (_inInvincibleFrame && _clock.getElapsedTime().asMilliseconds() > 500) {
+        _inInvincibleFrame = false;
     }
 
     //Check  if collied with an enemy
     // !!!NTF: Maybe add some damage to the enemies as well
-    for (int e = world.enemies.size() - 1; !inInvincibleFrame && e >= 0; --e) {
+    for (int e = world._enemies.size() - 1; !_inInvincibleFrame && e >= 0; --e) {
         //If the player and an enemy intersect
-        if (checkIntersect(*world.enemies[e])) {
+        if (checkIntersect(*world._enemies[e])) {
             //minus a single life per collision
-            health--;
-            world.enemies[e]->hp--;
-            if (!inInvincibleFrame) {
-                inInvincibleFrame = true;
-                clock.restart();
+            _health--;
+            world._enemies[e]->_hp--;
+            if (!_inInvincibleFrame) {
+                _inInvincibleFrame = true;
+                _clock.restart();
             }
 
             //Find the center of the enemy
-            Vector2f enemyPos = world.enemies[e]->getPosition();
+            Vector2f enemyPos = world._enemies[e]->getPosition();
             enemyPos.x += ENEMY_WIDTH / 2;
             enemyPos.y += ENEMY_HEIGHT / 2;
 
@@ -257,18 +263,18 @@ void Ship::update(World & world){
 
             collisionForce *= (float).2;
 
-            vel += collisionForce;
+            _vel += collisionForce;
 
             //Apply an opposite force to the enemy
             collisionForce *= (float)-1;
-            world.enemies[e]->vel += collisionForce;
+            world._enemies[e]->_vel += collisionForce;
 
             //Flash red if hit by an enemy
             setColor(Color{244, 66, 66, 200});
-            bleed = 10;
+            _bleed = 10;
 
-            if (health <= 0) {
-                playerIsDead=true;
+            if (_health <= 0) {
+                _playerIsDead=true;
                 break;
             }
         }
@@ -276,27 +282,27 @@ void Ship::update(World & world){
     //Check if an enemy bullet hits the player
     //  !!!NTF: Separate out the player bullets and
     //          the enemy bullets into separate arrays
-    for(int b = world.bullets.size() - 1; !inInvincibleFrame && b >= 0; --b) {
-        if(world.bullets[b]->source == ENEMY) {
+    for(int b = world._bullets.size() - 1; !_inInvincibleFrame && b >= 0; --b) {
+        if(world._bullets[b]->_source == ENEMY) {
             //If the bullets hits
-            if(checkIntersect(*world.bullets[b])) {
+            if(checkIntersect(*world._bullets[b])) {
                 //Remove a life
 
-                health--;
-                if (!inInvincibleFrame) {
-                    inInvincibleFrame = true;
-                    clock.restart();
+                _health--;
+                if (!_inInvincibleFrame) {
+                    _inInvincibleFrame = true;
+                    _clock.restart();
                 }
 
                 setColor(Color{244, 66, 66, 200});
-                bleed = 5;
+                _bleed = 5;
 
-                delete world.bullets[b];
-                world.bullets.erase(world.bullets.begin() + b);
+                delete world._bullets[b];
+                world._bullets.erase(world._bullets.begin() + b);
 
                 //If yr dead...
-                if (health <= 0) {
-                    playerIsDead=true;
+                if (_health <= 0) {
+                    _playerIsDead=true;
                     break;
                 }
 
@@ -306,23 +312,23 @@ void Ship::update(World & world){
     }
 
     //Move the players ship
-    move(vel);
+    move(_vel);
 
-    if(vel.x < -SWITCH_THRESHHOLD)        setTextureRect(sf::IntRect(70,0,43,99));
-    else if (vel.x > SWITCH_THRESHHOLD)   setTextureRect(sf::IntRect(120,0,43,99));
+    if(_vel.x < -SWITCH_THRESHHOLD)        setTextureRect(sf::IntRect(70,0,43,99));
+    else if (_vel.x > SWITCH_THRESHHOLD)   setTextureRect(sf::IntRect(120,0,43,99));
     else                setTextureRect(sf::IntRect(0,5,57,98));
 
-    //Set the health bar correctly
-    float percentHP = health / maxHP;
-    hpBar.setCurrentHealthBar(percentHP);
+    //Set the _health bar correctly
+    float percentHP = _health / _maxHP;
+    _hpBar.setCurrentHealthBar(percentHP);
     //Set the reload bars
-    float percentLaserReload = (float)laserReloadCounter / laserReloadTime;
+    float percentLaserReload = (float)_laserReloadCounter / _laserReloadTime;
     if(percentLaserReload >= 1) percentLaserReload = 1.0F;
-    laserReloadBar.setCurrVertical(percentLaserReload);
+    _laserReloadBar.setCurrVertical(percentLaserReload);
 
-    float percentPhotonReload = (float)photonReloadCounter / photonReloadTime;
+    float percentPhotonReload = (float)_photonReloadCounter / _photonReloadTime;
     if(percentPhotonReload >= 1) percentPhotonReload = 1.0F;
-    photonReloadBar.setCurrVertical(percentPhotonReload);
+    _photonReloadBar.setCurrVertical(percentPhotonReload);
 
 
 

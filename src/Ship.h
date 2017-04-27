@@ -1,7 +1,12 @@
-//Ship.h
-//Auth : William Horn
-//4.12.2017
-//Header for ship class
+/*
+Ship.cpp
+CS 202 Final Project
+Team Members: Michael Bilan, Andrew Cummins, Corey Gray, William Horn, Kyle Tam, Cameron Titus
+Created: 12/4/2017
+Last Updated: 26/4/2017
+Ship class
+*/
+
 
 #ifndef SHIP_H
 #define SHIP_H
@@ -21,11 +26,11 @@ struct Ship : public ShipShape{
     //constructor
     Ship();
 
-    sf::Vector2f vel;
-    sf::Vector2f accel;
-    sf::Texture shipTexture;
-    sf::Clock clock;
-    sf::Time time;
+    sf::Vector2f _vel;
+    sf::Vector2f _accel;
+    sf::Texture _shipTexture;
+    sf::Clock _clock;
+    sf::Time _time;
 
     /* weapons */
     //Creates a photon at the ships position
@@ -35,32 +40,32 @@ struct Ship : public ShipShape{
 
     /* reload values */ // !!!NTF: Put these in some sort of struct
                         //         Along with the weapon functions
-    int laserReloadTime;
-    int laserReloadSpeed;
-    int laserReloadCounter;
-    int photonReloadTime;
-    int photonReloadSpeed;
-    int photonReloadCounter;
-    int playerScore;
+    int _laserReloadTime;
+    int _laserReloadSpeed;
+    int _laserReloadCounter;
+    int _photonReloadTime;
+    int _photonReloadSpeed;
+    int _photonReloadCounter;
+    int _playerScore;
 
-    ReloadBar photonReloadBar;
-    ReloadBar laserReloadBar;
+    ReloadBar _photonReloadBar;
+    ReloadBar _laserReloadBar;
 
     /* health */
-    float health;
-    float maxHP;
-    bool playerIsDead;
-    bool isTouchingEnemy;
-    bool inInvincibleFrame;
-    HealthBar hpBar;
+    float _health;
+    float _maxHP;
+    bool _playerIsDead;
+    bool _isTouchingEnemy;
+    bool _inInvincibleFrame;
+    HealthBar _hpBar;
 
     //Checks if an enemy collides with the ship
     bool checkIntersect(const sf::Shape &e);
     bool checkIntersect(const sf::Sprite &e);
 
-    int bleed;
+    int _bleed;
     //To id the bullets
-    int sourceID;
+    int _sourceID;
 
     //Respond to keyboard inputs, controls movement and weapons
     //Modifies the world
