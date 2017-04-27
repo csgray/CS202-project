@@ -9,7 +9,7 @@ Definitions for Powerup class
 
 #include "constants.h"
 #include "powerup.h"
-#include "loader.h"
+#include "Loader.h"
 
 #include <SFML/Graphics.hpp>
 using sf::Vector2f;
